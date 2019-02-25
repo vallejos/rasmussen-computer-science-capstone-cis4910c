@@ -1,5 +1,19 @@
 <?php
 
+session_start();
+
+// check session
+if (!$_SESSION) {
+    header("location: index.php");
+}
+
+include_once("inc/db.php");
+include_once("inc/util.php");
+
+$userId = $_SESSION['user']['id'];
+
+$rows = getProjects($userId);
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -10,6 +24,9 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- custom css -->
+    <link rel="stylesheet" href="app.css">
 
     <title>Time-Tracker</title>
 </head>
@@ -34,7 +51,7 @@
                     <a class="nav-link" href="dashboard.php" tabindex="1">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="track.php" tabindex="2">Track</a>
+                    <a class="nav-link disabled" href="projects.php" tabindex="2">Projects</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?action=logout" tabindex="3">Logout</a>
@@ -43,13 +60,48 @@
         </div>
     </nav>
 
-    <h1>Welcome to Track!</h1>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-2 col-sm-12 col-sm-12"></div>
-        <div class="col-lg-6 col-md-8 col-sm-12 col-sm-12"></div>
-        <div class="col-lg-3 col-md-2 col-sm-12 col-sm-12"></div>
+    <div class="row" style="padding: 10px;">
+        <div class="col-lg-8 col-md-8 col-sm-8 pull-left"><h3>Projects</h3></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 pull-right"><button type="button" class="btn btn-primary">Add New Project</button></div>
     </div>
+
+<?php
+
+if (!$rows) {
+
+?>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">No projects found! <a href="">Add new Project</a></div>
+    </div>
+<?php
+
+} else {
+
+?>
+    <div class="row list border-top" style="padding: 10px;">
+        <div class="col-lg-1 col-md-1 col-sm-4"><strong>#</strong></div>
+        <div class="col-lg-3 col-md-3 col-sm-8"><strong>Name</strong></div>
+        <div class="col-lg-8 col-md-8 col-sm-12"><strong>Description</strong></div>
+    </div>
+<?php
+
+    while($row = $rows->fetch_assoc()) {
+        echo '
+    <div class="row list border-top" style="padding: 0 10px;">
+        <div class="col-lg-1 col-md-1 col-sm-4">'. $row['id'] .'</div>
+        <div class="col-lg-3 col-md-3 col-sm-8">'. $row['name'] .'</div>
+        <div class="col-lg-8 col-md-8 col-sm-12">'. $row['description'] .'</div>
+    </div>
+        ';
+    }
+}
+
+?>
+    <!-- footer -->
+    <div class="row footer border-top">
+            <div class="col-lg-12 col-md-12 col-sm-12 text-center">Time-Tracker App, by Leo Vallejos - 2019</div>
+    </div>
+    <!-- /footer -->
 </div>
 
 <!-- Optional JavaScript -->

@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 include_once("inc/db.php");
 include_once("inc/util.php");
 
@@ -8,12 +10,19 @@ $password = $_POST["password"];
 $errorMessage = "";
 
 if ($_GET["action"] == "logout") {
+    session_unset(); 
+    session_destroy();
     $errorMessage = "Successfully logged out.";
 } else if ($username && $password) {
     $user = getUser($username, $password);
 
     if ($user) {
         // all good
+
+        // save user information to session
+        $_SESSION['user'] = $user;
+
+        // go to dashboard
         header("location: dashboard.php");
     } else {
         // error
@@ -32,6 +41,9 @@ if ($_GET["action"] == "logout") {
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- custom css -->
+    <link rel="stylesheet" href="app.css">
 
     <title>Time-Tracker</title>
 </head>
