@@ -12,7 +12,22 @@ include_once("inc/util.php");
 
 $userId = $_SESSION['user']['id'];
 
-$rows = getProjects($userId);
+if (!$userId) {
+    $errorMessage = "There was an error. Please try again.";
+}
+
+if ($_POST) {
+    $name = $_POST['name'];
+    $description = $_POST['description'];
+
+    if (addProject($userId, $name, $description)) {
+        header("location: projects.php");
+    } else {
+        $errorMessage = "There was an error. Please try again.";
+    }
+
+} else {
+}
 
 ?>
 <!doctype html>
@@ -60,48 +75,38 @@ $rows = getProjects($userId);
         <div class="col-lg-12 col-md-12 col-sm-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">Projects</li>
+                    <li class="breadcrumb-item active"><a href="projects.php">Projects</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">New Project</li>
                 </ol>
             </nav>
-            <button onclick='window.open("projects_new.php", "_top");' type="button" class="btn btn-primary">Add New Project</button>
         </div>
     </div>
 
-<?php
+    <div class="alert alert-<?=$msgClass?>" role="alert">
+        <?php echo $errorMessage;?>
+    </div>
 
-if (!$rows) {
-
-?>
     <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12">No projects found! <a href="">Add new Project</a></div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <form action="projects_new.php" method="post">
+                <div class="form-group">
+                    <label for="inputName">Name</label>
+                    <input type="text" class="form-control" id="inputName" name="name" placeholder="Enter a Name" required="true" maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label for="inputDescription">Description</label>
+                    <input type="text" class="form-control" id="inputDescription" name="description" placeholder="Enter a Description" maxlength="200">
+                </div>
+                <button onclick='window.open("projects.php", "_top");'  type="button" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+        </div>
     </div>
-<?php
 
-} else {
-
-?>
-    <div class="row list border-top bg-light" style="padding: 10px;">
-        <div class="col-lg-1 col-md-1 col-sm-4"><strong>#</strong></div>
-        <div class="col-lg-3 col-md-3 col-sm-8"><strong>Name</strong></div>
-        <div class="col-lg-8 col-md-8 col-sm-12"><strong>Description</strong></div>
-    </div>
-<?php
-
-    while($row = $rows->fetch_assoc()) {
-        echo '
-    <div class="row list border-top" style="padding: 0 10px;">
-        <div class="col-lg-1 col-md-1 col-sm-4">'. $row['id'] .'</div>
-        <div class="col-lg-3 col-md-3 col-sm-8">'. $row['name'] .'</div>
-        <div class="col-lg-8 col-md-8 col-sm-12">'. $row['description'] .'</div>
-    </div>
-        ';
-    }
-}
-
-?>
     <!-- footer -->
     <div class="row footer border-top">
-            <div class="col-lg-12 col-md-12 col-sm-12 text-center">Time-Tracker App, by Leo Vallejos - 2019</div>
+        <div class="col-lg-12 col-md-12 col-sm-12 text-center">Time-Tracker App, by Leo Vallejos - 2019</div>
     </div>
     <!-- /footer -->
 </div>

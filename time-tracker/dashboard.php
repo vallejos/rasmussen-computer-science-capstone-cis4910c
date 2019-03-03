@@ -33,16 +33,12 @@ $rows = getEntriesByUser($userId);
 
 <div class="container">
 
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
-            <img src="img/logo.png" class="card-img-top" alt="Time-Tracker Logo" style="width: 300px;">
-        </div>
-    </div>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        <img src="img/logo.png" class="card-img-top" alt="Time-Tracker Logo" style="width: 300px;">
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
@@ -60,8 +56,14 @@ $rows = getEntriesByUser($userId);
     </nav>
 
     <div class="row" style="padding: 10px;">
-        <div class="col-lg-8 col-md-8 col-sm-8 pull-left"><h3>Dashboard</h3></div>
-        <div class="col-lg-4 col-md-4 col-sm-4 pull-right"><button type="button" class="btn btn-primary">Add New Entry</button></div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                </ol>
+            </nav>
+            <button onclick='window.open("entry_new.php", "_top");' type="button" class="btn btn-primary">Add New Entry</button>
+        </div>
     </div>
 
 <?php
@@ -77,7 +79,7 @@ if (!$rows) {
 } else {
 
 ?>
-    <div class="row list border-top" style="padding: 10px;">
+    <div class="row list border-top bg-light" style="padding: 10px;">
         <div class="col-lg-1 col-md-1 col-sm-2"><strong>#</strong></div>
         <div class="col-lg-2 col-md-2 col-sm-5"><strong>Date</strong></div>
         <div class="col-lg-1 col-md-1 col-sm-5"><strong>Duration</strong></div>

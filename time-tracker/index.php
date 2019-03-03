@@ -13,6 +13,7 @@ if ($_GET["action"] == "logout") {
     session_unset(); 
     session_destroy();
     $errorMessage = "Successfully logged out.";
+    $msgClass = "success";
 } else if ($username && $password) {
     $user = getUser($username, $password);
 
@@ -27,6 +28,7 @@ if ($_GET["action"] == "logout") {
     } else {
         // error
         $errorMessage = "Incorrect credentials. Please try again.";
+        $msgClass = "danger";
     }
 
 }
@@ -56,7 +58,9 @@ if ($_GET["action"] == "logout") {
             <div class="card mx-auto" style="margin-top: 20%;">
                 <img src="img/logo.png" class="card-img-top" alt="Time-Tracker Logo" style="margin: 30px auto; width: 90% !important;">
                 <div class="card-body">
-                    <p class="text-danger"><?php echo $errorMessage;?></p>
+                    <div class="alert alert-<?=$msgClass?>" role="alert">
+                        <?php echo $errorMessage;?>
+                    </div>
                     <h5 class="card-title">Sign In</h5>
                     <form action="index.php" method="post">
                         <div class="form-group">

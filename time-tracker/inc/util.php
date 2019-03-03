@@ -121,9 +121,8 @@ function addProject($userId, $name, $description) {
         description='".$description."' ";
     $result = $dbc->query($sql);
 
-    if ($result->num_rows > 0) {
-        // return Entries
-        return $result->fetch_assoc();
+    if ($result == TRUE) {
+        return true;
     }
 
     // return null couldn't insert
@@ -148,9 +147,8 @@ function addEntry($userId, $date, $duration, $notes, $projectId) {
         duration='".$duration."', notes='".$notes."', project_id='".$projectId."' ";
     $result = $dbc->query($sql);
 
-    if ($result->num_rows > 0) {
-        // return Entries
-        return $result->fetch_assoc();
+    if ($result == TRUE) {
+        return true;
     }
 
     // return null couldn't insert
