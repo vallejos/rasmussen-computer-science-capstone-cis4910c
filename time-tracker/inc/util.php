@@ -121,7 +121,7 @@ function addProject($userId, $name, $description) {
         description='".$description."' ";
     $result = $dbc->query($sql);
 
-    if ($result == TRUE) {
+    if ($result) {
         return true;
     }
 
@@ -147,7 +147,7 @@ function addEntry($userId, $date, $duration, $notes, $projectId) {
         duration='".$duration."', notes='".$notes."', project_id='".$projectId."' ";
     $result = $dbc->query($sql);
 
-    if ($result == TRUE) {
+    if ($result) {
         return true;
     }
 
